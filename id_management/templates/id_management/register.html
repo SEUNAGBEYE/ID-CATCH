@@ -1,0 +1,30 @@
+{% extends 'id_management/base.html' %}
+{% block title %} Register {% endblock title %}
+{% block body %}
+
+<div class="container">
+<div class="col-md-6">
+<div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Sign Up</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="{% url 'id_management:register' %}" method="post">
+                            <fieldset>
+                                <div class="form-group">
+                                	{% csrf_token %}
+                                    {{ form.as_p }}
+                                    
+                                </div>
+                              
+                                <!-- Change this to a button or input when using this as a form -->
+                                <input type="submit" class="btn btn-sm btn-success" value="Register">
+                                <p style="text-align: center;">Already Have an Account Please <a href="{% url 'id_management:login' %}">Sign-In</a></p>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+</div>
+</div>
+
+{% endblock body %}

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from user_mgr.models import UserAccount
+from id_management.models import UserAccount
 
 class UserRegistrationForm(forms.ModelForm):
     first_name      = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'First Name', 'required':'required'}))
@@ -30,4 +30,4 @@ class UserAccountForm(forms.ModelForm):
 
     class Meta:
         model = UserAccount
-        fields = ('phone_number', 'gender', 'status', 'occupation')
+        fields = ('gender', 'status', 'occupation')

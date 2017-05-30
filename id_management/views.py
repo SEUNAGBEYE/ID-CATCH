@@ -6,15 +6,15 @@ from django.shortcuts import render
 
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from user_mgr.forms import UserRegistrationForm, LoginForm, UserAccountForm
+from id_management.forms import UserRegistrationForm, LoginForm, UserAccountForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from user_mgr.models import UserAccount
+from id_management.models import UserAccount
 from django.http import HttpResponse
 # Create your views here.
 def IndexView(request):
-    return render(request, 'user_mgr/index.html', {})
+    return render(request, 'id_management/index.html')
 
 def registerView(request):
     
@@ -32,7 +32,8 @@ def registerView(request):
         if User.objects.filter(email = rp['email']).exists():
             context['user_reg_form'] = user_reg_form
             messages.info(request, "Sorry this user email has been taken")
-            return redirect(reverse('user_mgr:register'))
+            return render(request, 'id_management/profile.html', context)
+            # return redirect(reverse('user_mgr:register'))
         else:
             if user_reg_form.is_valid():
                 # user_reg_form.save()
@@ -49,14 +50,15 @@ def registerView(request):
                     auth_user = authenticate(username = user.username, password = rp['password'])
                     if auth_user:
                         logged_in_user = login(request, auth_user)
-                        return redirect(reverse('newsfeed:user_newsfeed', kwargs = {'username':request.user.username}))
+                        return render(request, 'id_management/profile.html', context)
+                        # return redirect(reverse('newsfeed:user_newsfeed', kwargs = {'username':request.user.username}))
                 else:
                     messages.warning(request, "Sorry something went wrong while saving your records")
             else:
                 context['user_reg_form'] = UserRegistrationForm(data = request)
-                return render(request, 'user_mgr/register.html', context)
+                return render(request, 'id_management/register.html', context)
 
-    return render(request, 'user_mgr/register.html', context)
+    return render(request, 'id_management/register.html', context)
 
 def loginView(request):
 
@@ -91,8 +93,11 @@ def loginView(request):
         else:
             messages.error(request, "Sorry this email address does not exist")
             context['loginForm'] = UserLoginForm(data = request.POST)
-    return render(request, 'user_mgr/login.html', context)
+    return render(request, 'id_management/login.html', context)
 
 def logoutView(request):
     logout(request)
     return redirect(reverse('user_mgr:index'))
+
+def profileView(request):
+    return render(request, 'id_management/profile.html')
